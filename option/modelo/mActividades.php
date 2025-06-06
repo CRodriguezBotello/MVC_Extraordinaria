@@ -5,8 +5,8 @@
 
         public function __construct() {
             require_once 'config/conexion_1n.php';
-            $conexion= new mysqli(SERVIDOR, USUARIO, PASSWORD, BBDD);
-            $conexion->set_charset("utf8");
+            $this->conexion= new mysqli(SERVIDOR, USUARIO, PASSWORD, BBDD);
+            $this->conexion->set_charset("utf8");
         }
 
         public function ListarActividades(){
@@ -27,20 +27,25 @@
             return $Actividades;
         }
         
-        public function InsertarActividad(){
-            require_once 'config/conexion_1n.php';
-            $conexion= new mysqli(SERVIDOR, USUARIO, PASSWORD, BBDD);
-            $conexion->set_charset("utf8");
+        public function InsertarActividad($nombre, $etapa){
 
-            if (isset($_POST["nombre"]) && !empty($_POST["nombre"]) && isset($_POST["etapas"]) && !empty($_POST["etapas"])) {
-                // echo $_POST["nombre"];
-                // echo '<br/>';
-                // echo $_POST["etapas"];
-                // echo '<br/>';
-                $sql= 'INSERT INTO actividades(NombreActividades, IdEtapas) VALUES("'.$_POST["nombre"].'",'.$_POST["etapas"].');';
-                $this->conexion->query($sql); 
-                // echo $conexion->error;
+            try {
+            
+                $sql= 'INSERT INTO actividades(NombreActividades, IdEtapas) VALUES("'.$nombre.'",'.$etapa.');';
+                $this->conexion->query($sql);
+
+                $this->mensaje="Actividad añadida correctamente";
+
+            } catch (mysqli_sql_exception $e) {
+                if ($e->getCode() == 1062) {
+                    $this->mensaje="Ya existe esta actividad en la Base de Datos";
+                }else {
+                    $this->mensaje="La actividad no ha sido insertada".$e->getMessage();
+                }
+                
             }
+
+            return $this->mensaje;
         }
     }
 ?>

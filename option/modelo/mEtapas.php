@@ -11,8 +11,8 @@
         
         public function ListarEtapas(){
 
-            $resultado= "SELECT IdEtapas,NombreEtapas FROM Etapas";
-            $resultado=$this->conexion->query($resultado);
+            $sql= "SELECT IdEtapas,NombreEtapas FROM Etapas";
+            $resultado=$this->conexion->query($sql);
 
             if ($resultado->num_rows > 0) {
                 while($fila=$resultado->fetch_assoc()){
@@ -25,13 +25,24 @@
             return $Etapas;
         }
 
-        public function InsertarEtapa(){
+        public function InsertarEtapa($nombre){
 
-                // echo $_POST["etapas"];
-                // echo '<br/>';
-                $sql= 'INSERT INTO etapas(NombreEtapas) VALUES("'.$_POST["nombre"].'");';
+                try {
+                $sql= 'INSERT INTO etapas(NombreEtapas) VALUES("'.$nombre.'");';
                 $this->conexion->query($sql); 
-                // echo $conexion->error;
+
+                $this->mensaje="Etapa insertada correctamente";
+
+            } catch (mysqli_sql_exception $e) {
+                if ($e->getCode() == 1062) {
+                    $this->mensaje="El nombre de esta etapa ya existe";
+                }else{
+                    $this->mensaje="La etapa no ha sido insertada".$e->getMessage();
+                }
+            }
+
+            return $this->mensaje; 
+                
         }
     }
 ?>

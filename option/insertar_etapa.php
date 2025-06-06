@@ -1,8 +1,8 @@
 <?php
     require_once 'controlador/cEtapas.php';
     $objEtapas = new CEtapas();
-    $objEtapas->AnadirEtapa();
+    $mensaje=$objEtapas->AnadirEtapa();
 
-    include 'listarEtapas.php';
+    include 'vista/v_mensaje_Etapas.php';
     
 ?>

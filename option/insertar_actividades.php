@@ -1,7 +1,7 @@
 <?php
     require_once 'controlador/cActividades.php';
     $objActividad = new CActividades();
-    $Actividad=$objActividad->AnadirActividad();
+    $mensaje=$objActividad->AnadirActividad();
 
-    include 'listarActividades.php';
+    include 'vista/v_mensaje_Actividades.php';
 ?>

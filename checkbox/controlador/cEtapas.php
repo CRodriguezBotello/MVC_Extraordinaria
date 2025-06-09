@@ -27,5 +27,19 @@
 
             return $this->mensaje;
         }
+
+        public function actualizar_etapas_actividad(){
+            if(!empty($_POST['idActividad'])){
+                $idActividad=$_POST['idActividad'];
+
+                if(isset($_POST['etapas']) && !empty($_POST['etapas'])){
+                    $etapa=$_POST['etapas'];
+
+                    $objEtapas = new MEtapas();
+                    $this->mensaje = $objEtapas->Nuevas_Etapa_Actividad($idActividad, $etapa); //envio el id de la actividad y los id de las activ
+                }
+            }
+            
+        }
     }
 ?>

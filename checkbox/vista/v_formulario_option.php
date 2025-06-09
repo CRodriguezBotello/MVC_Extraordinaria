@@ -13,9 +13,9 @@
 
         <label for="etapas">Etapas:</label><br/>
         <?php
-            foreach ($Etapas as $idEtapa => $etapa) {
+            foreach ($Etapas as $etapa) {
                 // añadimos un checkbox nuevo por cada fila de etapas que haya en la base de datos
-                echo '<input type="checkbox" name="etapas[]" value='.$idEtapa.'>' .$etapa. '<br/>';
+                echo '<input type="checkbox" name="etapas[]" value='.$etapa['IdEtapas'].'>' .$etapa['NombreEtapas']. '<br/>';
             }
         ?>
         <br/>

@@ -42,11 +42,11 @@
             if (isset($_GET['idActividad'])) {
                 $idActividad = $_GET['idActividad'];
         
-                $objMAct = new MActividades();
-                $this->actividad = $objMAct->etapa_actividad($idActividad);
+                $objActividad = new MActividades();
+                $this->actividad = $objActividad->etapa_actividad($idActividad);
         
-                $objMEtp = new MEtapas();
-                $this->etapa = $objMEtp->ListarEtapas();
+                $objEtapas = new MEtapas();
+                $this->etapa = $objEtapas->ListarEtapas();
             } else {
                 $this->mensaje = "Fallo al modificar: ID no recibido";
             }

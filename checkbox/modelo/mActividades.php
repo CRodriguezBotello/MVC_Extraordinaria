@@ -31,11 +31,11 @@
         }
 
         public function etapa_actividad($idActividad){
-            $sql = "SELECT actividades.idActividad AS Actividad, actividades.nombre AS nombreA, etapas.idEtapa AS Etapa, etapas.nombre AS nombreE 
+            $sql = "SELECT actividades.idActividades AS Actividad, actividades.nombreActividades AS nombreA, etapas.idEtapas AS Etapa, etapas.nombreEtapas AS nombreE 
                     FROM actividades 
-                    INNER JOIN actividades_etapas ON actividades.idActividad = actividades_etapas.idActividad
-                    INNER JOIN etapas ON actividades_etapas.idEtapa = etapas.idEtapa
-                    WHERE actividades.idActividad = '$idActividad'";
+                    INNER JOIN etapas_actividades ON actividades.idActividades = etapas_actividades.idActividades
+                    INNER JOIN etapas ON etapas_actividades.idEtapas = etapas.idEtapas
+                    WHERE actividades.idActividades = '$idActividad'";
             $result = $this->conexion->query($sql);
         
             if ($result->num_rows > 0) {
@@ -43,11 +43,11 @@
                     'etapas' => []
                 ];
                 while ($row = $result->fetch_assoc()) {
-                    $data['idActividad'] = $row['idActiv'];
-                    $data['nombre_actividad'] = $row['nombre_act'];
+                    $data['idActividad'] = $row['Actividad'];
+                    $data['nombreA'] = $row['nombreA'];
                     $data['etapas'][] = [
-                        'id' => $row['idEt'],
-                        'nombre' => $row['nombre_etapas']
+                        'id' => $row['Etapa'],
+                        'nombre' => $row['nombreE']
                     ];
                 }
                 return $data;

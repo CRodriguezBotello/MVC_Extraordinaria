@@ -1,14 +1,14 @@
 <?php
     
-    include('controladores/cactividades.php');
+    include('controlador/cActividades.php');
     
-    $objActividad = new Cactividades();
-    $objActividad->obtener_nombre_act();
+    $objActividad = new CActividades();
+    $objActividad->obtener_datos();
     
-    $act = $objActividad->act;
-    $etapas =$objActividad->etapas;
+    $Actividad = $objActividad->actividad;
+    $Etapa =$objActividad->etapa;
 
 
-    
+
     include 'vista/v_modificar_actividad.php';
 ?>

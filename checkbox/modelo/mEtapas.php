@@ -12,13 +12,13 @@
 
         public function ListarEtapas(){
 
-            $sql= "SELECT IdEtapas,NombreEtapas FROM Etapas";
+            $sql= "SELECT * FROM Etapas";
             $resultado=$this->conexion->query($sql);
 
             if ($resultado->num_rows > 0) {
                 while($fila=$resultado->fetch_assoc()){
                     
-                    $Etapas[$fila["IdEtapas"]]=$fila["NombreEtapas"];
+                    $Etapas[]=$fila;
                 }
             }else{
                 exit('No hay filas en la tabla de Etapas');
@@ -44,6 +44,37 @@
 
             return $this->mensaje;
             
+        }
+
+        public function Nuevas_Etapa_Actividad($id_activ, $etapas){
+            $this->conexion->begin_transaction();
+        
+            try {
+                
+                $sql_borrar = "DELETE FROM etapas_actividades WHERE idActividades = ?";
+                $stmt = $this->conexion->prepare($sql_borrar);
+                $stmt->bind_param('i', $id_activ);
+                $stmt->execute();
+        
+                
+                $sql_insert = "INSERT INTO etapas_actividades (idActividades, idEtapas) VALUES (?, ?)";
+                $stmt_insert = $this->conexion->prepare($sql_insert);
+        
+                foreach ($etapas as $etapa) { //foreach igual que en el de alta de actividad
+                    $stmt_insert->bind_param('ii', $id_activ, $etapa);
+                    if (!$stmt_insert->execute()) {
+                        throw new Exception("Error insertando etapa $etapa: " . $stmt_insert->error);
+                    }
+                }
+        
+                $this->conexion->commit();
+                $this->mensaje = "Etapas actualizadas correctamente";
+            } catch (Exception $e) {
+                $this->conexion->rollback(); //en caso de fallo al borrar las etapas y darlas de alta de nuevo vuelve atras y no hace ningun cambio
+                $this->mensaje = "Error al actualizar etapas: " . $e->getMessage();
+            }
+        
+            return $this->mensaje;
         }
     }
 ?>

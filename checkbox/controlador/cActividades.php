@@ -1,11 +1,14 @@
 <?php
+        require_once 'modelo/mActividades.php';
+        include 'modelo/mEtapas.php';
     Class CActividades{
 
         public $mensaje;
+        public $actividad;
+        public $etapa;
 
         public function ListarActividades(){
 
-            require_once 'modelo/mActividades.php';
             $objActividad = new MActividades();
             $Actividades=$objActividad->ListarActividades();
             return $Actividades;
@@ -22,7 +25,6 @@
 
                 }
 
-                require_once 'modelo/mActividades.php';
                 $objActividad = new MActividades();
                 $this->mensaje=$objActividad->InsertarActividad($nombre, $etapas);
             }else{
@@ -33,6 +35,23 @@
             
         }
 
+        public function obtener_datos(){
+            $this->actividad = null;
+            $this->etapa = [];
+        
+            if (isset($_GET['idActividad'])) {
+                $idActividad = $_GET['idActividad'];
+        
+                $objMAct = new MActividades();
+                $this->actividad = $objMAct->etapa_actividad($idActividad);
+        
+                $objMEtp = new MEtapas();
+                $this->etapa = $objMEtp->ListarEtapas();
+            } else {
+                $this->mensaje = "Fallo al modificar: ID no recibido";
+            }
+        }
+
         public function ActualizarActividad(){
             if (!empty($_POST["actividad"])) {
                 if (isset($_POST["idActividad"]) && !empty($_POST["idActividad"])) {
@@ -40,7 +59,6 @@
                     $idActividad = $_POST["idActividad"];
                     $actividad = $_POST["actividad"];
 
-                    require_once 'modelo/mActividades.php';
                     $objActividad = new MActividades();
                     $this->mensaje=$objActividad->ModificarActividad($idActividad, $actividad);
                     return $this->mensaje;
@@ -54,7 +72,6 @@
 
                 $idActividad = $_GET["idActividad"];
 
-                require_once 'modelo/mActividades.php';
                 $objActividad = new MActividades();
                 $this->mensaje=$objActividad->BorrarActividad($idActividad);
                 

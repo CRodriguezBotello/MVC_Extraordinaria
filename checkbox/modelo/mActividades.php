@@ -29,6 +29,32 @@
             
             
         }
+
+        public function etapa_actividad($idActividad){
+            $sql = "SELECT actividades.idActividad AS Actividad, actividades.nombre AS nombreA, etapas.idEtapa AS Etapa, etapas.nombre AS nombreE 
+                    FROM actividades 
+                    INNER JOIN actividades_etapas ON actividades.idActividad = actividades_etapas.idActividad
+                    INNER JOIN etapas ON actividades_etapas.idEtapa = etapas.idEtapa
+                    WHERE actividades.idActividad = '$idActividad'";
+            $result = $this->conexion->query($sql);
+        
+            if ($result->num_rows > 0) {
+                $data = [
+                    'etapas' => []
+                ];
+                while ($row = $result->fetch_assoc()) {
+                    $data['idActividad'] = $row['idActiv'];
+                    $data['nombre_actividad'] = $row['nombre_act'];
+                    $data['etapas'][] = [
+                        'id' => $row['idEt'],
+                        'nombre' => $row['nombre_etapas']
+                    ];
+                }
+                return $data;
+            } else {
+                return null;
+            }
+        }
         
         public function InsertarActividad($nombre, $etapas){
 
